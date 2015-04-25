@@ -73,10 +73,24 @@
 
     this.$get = ['$rootElement', '$rootScope', '$compile', '$window', '$document', function ($rootElement, $rootScope, $compile, $window, $document) {
 
+      var mouseTrapEnabled = true;
+
+      function pause() {
+        mouseTrapEnabled = false;
+      }
+
+      function unpause() {
+        mouseTrapEnabled = true;
+      }
+
       // monkeypatch Mousetrap's stopCallback() function
       // this version doesn't return true when the element is an INPUT, SELECT, or TEXTAREA
       // (instead we will perform this check per-key in the _add() method)
       Mousetrap.stopCallback = function(event, element) {
+        if (!mouseTrapEnabled) {
+          return true;
+        }
+
         // if the element has the class "mousetrap" then no need to stop
         if ((' ' + element.className + ' ').indexOf(' mousetrap ') > -1) {
           return false;
@@ -542,7 +556,6 @@
         };
       }
 
-
       var publicApi = {
         add                   : _add,
         del                   : _del,
@@ -555,7 +568,9 @@
         cheatSheetHotkey      : this.cheatSheetHotkey,
         cheatSheetDescription : this.cheatSheetDescription,
         purgeHotkeys          : purgeHotkeys,
-        templateTitle         : this.templateTitle
+        templateTitle         : this.templateTitle,
+        pause                 : pause,
+        unpause               : unpause
       };
 
       return publicApi;
