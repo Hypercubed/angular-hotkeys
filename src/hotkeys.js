@@ -473,6 +473,15 @@
       }
 
       /**
+       * Get all hotkeyDescription
+       *
+       * @return {Array}          Array of Hotkey objects
+       */
+      function _getAll () {
+        return scope.hotkeys;
+      }
+
+      /**
        * Binds the hotkey to a particular scope.  Useful if the scope is
        * destroyed, we can automatically destroy the hotkey binding.
        *
@@ -545,6 +554,7 @@
         add                   : _add,
         del                   : _del,
         get                   : _get,
+        getAll                : _getAll,
         bindTo                : bindTo,
         template              : this.template,
         toggleCheatSheet      : toggleCheatSheet,
